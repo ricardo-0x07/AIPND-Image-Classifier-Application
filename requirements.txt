@@ -10,3 +10,4 @@ jupyter-console==5.1.0
 jupyter-core==4.3.0
 numpy==1.12.1
 pandas==0.20.1
+kaggle-cli==0.12.13
