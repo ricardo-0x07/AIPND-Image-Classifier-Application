@@ -27,7 +27,7 @@ models_dict = {'resnet34': {'model':resnet34, 'num_features': resnet34.fc.in_fea
 
 def prepdata(arch, dataLoaders):
     # apply model to input
-    pretrained_model = models_dict[arch]
+    pretrained_model = models_dict[arch]['model']
     num_features = pretrained_model.fc.in_features
     modules = list(pretrained_model.children())[:-1]
     pretrained_model=nn.Sequential(*modules)
@@ -174,6 +174,7 @@ if __name__ == "__main__":
 
     # create classifier 
     model = Classifier(num_features, num_classes)
+    print('model:', model)
 
     weights, biases = [], []
     for name, p in model.named_parameters():
@@ -189,3 +190,4 @@ if __name__ == "__main__":
     ], lr=learning_rate, momentum=momentum, weight_decay=weight_decay)
 
     model = train(model,dataset_sizes=dataset_sizes, train_features=conv_feat_train, train_labels=labels_train, val_features=conv_feat_val, val_labels=labels_val, criterion=criterion, optimizer=optimizer, num_epochs=num_epochs, train=True, shuffle=True)
+    print('model:', model)
