@@ -1,16 +1,18 @@
 import numpy as np
 import torch
+import bcolz as bz
 from torchvision import datasets, transforms
 import copy
 import time
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
+import os, sys
 # %matplotlib inline
 
 
+use_gpu = torch.cuda.is_available()
 
-
-def preprocess(data_base_path):
+def preprocess(data_base_path, batch_size):
     preprocess = {
         'train': transforms.Compose([
             transforms.RandomResizedCrop(224),
@@ -145,3 +147,9 @@ def extract_features(dataset, pretrained_model):
     features = np.concatenate([[feat] for feat in features])
     return (features, labels_list)
 
+def save_array(filename, arr):
+    c=bz.carray(arr, rootdir=filename, mode='w')
+    c.flush()
+
+def load_array(filename):
+    return bz.open(filename)[:]
